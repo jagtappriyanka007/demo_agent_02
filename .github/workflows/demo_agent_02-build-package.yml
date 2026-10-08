@@ -1,0 +1,77 @@
+name: My Skill Build Package Pipeline
+on:
+  workflow_dispatch:
+    inputs:
+      python-version:
+        description: Python version used to build the package.
+        required: false
+        type: string
+        default: "3.11"
+      version-override:
+        description: Optional Package version override. Leave empty to use pyproject.toml version.
+        required: false
+        type: string
+        default: ""
+      source-artifact-suffix:
+        description: Source artifact suffix produced by the Cython workflow
+        required: false
+        type: string
+        default: cythonized-source
+      build-dir:
+        description: Directory where wheels are created.
+        required: false
+        type: string
+        default: dist
+  push:
+    branches:
+      - main
+    paths:
+      - "core/**"
+      - "skills/**"
+      - "setup.py"
+      - "pyproject.toml"
+      - "requirements*.txt"
+      - ".github/workflows/demo_agent_02-build-package.yml"
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  validate-environment-dependencies-security:
+    name: Validate Environment Dependencies and Security
+    uses: HARMAN-DTS/skillhub-devops-templates/.github/workflows/validate-environment-dependencies-security.yml@main
+    with:
+      python-version: ${{ inputs.python-version || vars.PYTHON_VERSION || '3.12' }}
+      environment: ${{ vars.ENVIRONMENT }}
+      package-name: ${{ vars.PACKAGE_NAME || 'demo_agent_02' }}
+      package-directory: ${{ vars.PACKAGE_DIRECTORY || 'skills/my_skill' }}
+      requirements-file: ${{ vars.REQUIREMENTS_FILE || 'skills/my_skill/requirements.txt' }}
+
+  cythonize-package:
+    name: Cythonize Package
+    uses: HARMAN-DTS/skillhub-devops-templates/.github/workflows/cythonization-process.yml@main
+    with:
+      python-version: ${{ inputs.python-version || vars.PYTHON_VERSION || '3.12' }}
+      environment: ${{ vars.ENVIRONMENT }}
+      package-name: ${{ vars.PACKAGE_NAME || 'demo_agent_02' }}
+      package-directory: ${{ vars.PACKAGE_DIRECTORY || 'skills/my_skill' }}
+      requirements-file: ${{ vars.REQUIREMENTS_FILE || 'skills/my_skill/requirements.txt' }}
+
+  build-validate-wheel:
+    name: Build, Validate, and Sign Wheel
+    needs:
+      - cythonize-package
+      - validate-environment-dependencies-security
+    uses: HARMAN-DTS/skillhub-devops-templates/.github/workflows/build-validate-wheel.yml@main
+    with:
+      package-name: ${{ vars.PACKAGE_NAME || 'demo_agent_02' }}
+      package-directory: ${{ vars.PACKAGE_DIRECTORY || 'skills/my_skill' }}
+      environment: ${{ vars.ENVIRONMENT }}
+      python-version: ${{ inputs.python-version || vars.PYTHON_VERSION || '3.12' }}
+      version-override: ${{ inputs.version-override }}
+      requirements-file: ${{ vars.REQUIREMENTS_FILE || 'skills/my_skill/requirements.txt' }}
+      build-dir: ${{ inputs.build-dir || vars.BUILD_DIR }}
+      source-artifact-suffix: ${{ inputs.source-artifact-suffix || vars.SOURCE_ARTIFACT_SUFFIX || 'cythonized-source' }}
+      sign-artifact: true

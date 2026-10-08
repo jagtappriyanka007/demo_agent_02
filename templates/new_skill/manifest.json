@@ -1,0 +1,34 @@
+{
+    "name": "<skill_folder_name>",
+    "version": "1.0.0",
+    "description": "<One sentence describing what this skill does.>",
+    "category": "<rag|domain|markdown|bre|pipeline>",
+    "author": "<your-email@company.com>",
+    "exported_functions": [
+        {
+            "name": "<function_name>",
+            "type": "function",
+            "description": "<What the function does.>",
+            "inputs": {
+                "<param1>": "str — <what it is>",
+                "<param2>": "int — <what it is>"
+            },
+            "outputs": {
+                "<key1>": "str — <what it is>",
+                "<key2>": "str — <what it is>"
+            }
+        }
+    ],
+    "env_vars": [
+        "AZURE_OPENAI_API_KEY",
+        "AZURE_OPENAI_ENDPOINT",
+        "AZURE_OPENAI_DEPLOYMENT",
+        "AZURE_OPENAI_API_VERSION"
+    ],
+    "depends_on_skills": [],
+    "dependencies": "requirements.txt",
+    "min_python": "3.10",
+    "changelog": [
+        "1.0.0 — Initial release"
+    ]
+}

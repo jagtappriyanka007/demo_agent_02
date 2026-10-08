@@ -1,0 +1,32 @@
+{
+    "name": "my_skill",
+    "version": "1.0.0",
+    "description": "One sentence describing what this skill does.",
+    "category": "domain",
+    "author": "your-team@company.com",
+    "exported_functions": [
+        {
+            "name": "my_skill_run",
+            "type": "function",
+            "description": "One sentence describing what this skill does.",
+            "inputs": {
+                "input_text": "str — text to process"
+            },
+            "outputs": {
+                "result": "str — the processed output"
+            }
+        }
+    ],
+    "env_vars": [
+        "AZURE_OPENAI_API_KEY",
+        "AZURE_OPENAI_ENDPOINT",
+        "AZURE_OPENAI_DEPLOYMENT",
+        "AZURE_OPENAI_API_VERSION"
+    ],
+    "depends_on_skills": [],
+    "dependencies": "requirements.txt",
+    "min_python": "3.11",
+    "changelog": [
+        "1.0.0 — Initial release"
+    ]
+}

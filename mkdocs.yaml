@@ -1,0 +1,20 @@
+site_name: demo_agent_02
+site_description: One sentence describing what this skill does.
+site_author: Genesis Platform
+
+docs_dir: docs
+
+nav:
+  - Home: index.md
+
+theme:
+  name: material
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true

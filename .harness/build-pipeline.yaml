@@ -1,0 +1,20 @@
+pipeline:
+  name: demo_agent_02-ci-pipeline
+  identifier: demo_agent_02_ci_pipeline
+  projectIdentifier: CSDemo
+  orgIdentifier: WiproPOC
+  tags: {}
+
+  template:
+    templateRef: skillbuildpipeline
+    versionLabel: v1
+
+    templateInputs:
+      properties:
+        ci:
+          codebase:
+            repoName: demo_agent_02
+            build:
+              type: branch
+              spec:
+                branch: main

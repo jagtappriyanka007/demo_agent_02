@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel", "build", "Cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "demo_agent_02"
+version = "1.0.0"
+description = "One sentence describing what this skill does."
+readme = "README.md"
+authors = [{ name = "Wipro", email = "your-team@company.com" }]
+requires-python = ">=3.11"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*", "skills*"]
+exclude = ["*.tests*", "*.egg-info"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.md", "*.yaml", "*.yml"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "W", "I"]
+ignore = ["E501", "F401"]
+exclude = [
+    "skills/*/tests/__pycache__",
+    "skills/*/_tools/__pycache__",
+]
+
+[tool.black]
+target-version = ["py311"]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["skills"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
